@@ -1,13 +1,13 @@
 <h1 align="center">Welcome to nokia-snake-canvas 🐍</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/orafaelfragoso/nokia-snake-game#readme" target="_blank">
+  <a href="https://github.com/orafaelfragoso/nokia-snake-canvas/blob/master/README.md" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
   <a href="https://github.com/orafaelfragoso/nokia-snake-game/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/orafaelfragoso/nokia-snake-game/blob/master/LICENSE" target="_blank">
+  <a href="https://github.com/orafaelfragoso/nokia-snake-game/blob/master/LICENSE.md" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/github/license/orafaelfragoso/nokia-snake-canvas" />
   </a>
   <a href="https://twitter.com/orafaelfragoso" target="_blank">
@@ -30,6 +30,37 @@ yarn install
 ```sh
 yarn dev
 ```
+
+## Milestones
+
+- [x] Basic Game Features
+- [x] Full-screen support
+- [ ] Tail collision
+- [x] Food
+- [ ] Poison
+- [ ] Bonus Food
+- [ ] Sounds
+  - [ ] Eat Fruit
+  - [ ] Eat Poison
+  - [ ] Eat Bonus Fruit
+  - [ ] Collide
+  - [ ] Menu Switch Option
+  - [ ] Menu Select Option
+- [ ] Game Over
+- [ ] Ranking (localStorage)
+- [ ] Main Menu
+- [ ] Canvas Graphics instead of JPEGs
+- [ ] Speed increase when eating
+- [ ] Animations
+  - [ ] Snake Eating
+  - [ ] Objects Appearing
+  - [ ] Scenario Starting
+  - [ ] Game Over
+- [ ] Mobile Support (Ideas?)
+- [ ] Performance
+  - [ ] Rendering Optimization
+  - [ ] Memory Optimization
+  - [ ] Service Workers (Offline support)
 
 ## Author
 
