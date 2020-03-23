@@ -1,8 +1,17 @@
 {
-  "name": "snake",
+  "name": "nokia-snake-canvas",
   "version": "1.0.0",
+  "description": "A Snake game with TypeScript and Canvas to pass the time because of COVID-19",
+  "author": "Rafael Fragoso",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orafaelfragoso/nokia-snake-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/orafaelfragoso/nokia-snake-game/issues"
+  },
   "scripts": {
     "dev": "parcel index.html",
     "build": "parcel build index.html"
