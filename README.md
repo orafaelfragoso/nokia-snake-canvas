@@ -11,7 +11,7 @@
     <img alt="License: MIT" src="https://img.shields.io/github/license/orafaelfragoso/nokia-snake-canvas" />
   </a>
   <a href="https://twitter.com/orafaelfragoso" target="_blank">
-    <img alt="Twitter: orafaelfragoso" src="https://img.shields.io/twitter/follow/orafaelfragoso.svg?style=social" />
+    <img alt="Twitter: orafaelfragoso" src="https://img.shields.io/twitter/follow/orafaelfragoso?label=Follow&style=social">
   </a>
 </p>
 
