@@ -1,77 +1,100 @@
-class Snake {
-  public x: number
-  public y: number
-  public xSpeed: number
-  public ySpeed: number
-  public scale: number
-  public ctx: CanvasRenderingContext2D
-  public image: CanvasImageSource
+import { BoardDimension, FoodConstructor, SnakeConstructor, SnakeTail } from './types';
 
-  private dimensions: any
-  private total: number = 0
-  private tail: Array<any> = []
+export default class Snake implements SnakeConstructor {
+  x: number;
+  y: number;
+  xSpeed: number;
+  ySpeed: number;
+  scale: number;
+  ctx: CanvasRenderingContext2D;
+  image: CanvasImageSource;
+  dimensions: BoardDimension;
+  total = 2;
+  tail: Array<SnakeTail> = [];
+  direction = 'RIGHT';
 
-  constructor(ctx: CanvasRenderingContext2D, dimensions: any, scale: number) {
-    this.ctx = ctx
-    this.dimensions = dimensions
-    this.x = (dimensions.width / 2) + dimensions.padLeft - (scale / 2)
-    this.y = (dimensions.height / 2) + dimensions.padTop - (scale / 2)
-    this.xSpeed = scale
-    this.ySpeed = 0
-    this.scale = scale
-    this.image = <CanvasImageSource> document.getElementById('snake')
+  constructor(ctx: CanvasRenderingContext2D, dimensions: BoardDimension, scale: number) {
+    this.ctx = ctx;
+    this.dimensions = dimensions;
+    this.x = dimensions.width / 2 + dimensions.left - scale / 2;
+    this.y = dimensions.height / 2 + dimensions.top - scale / 2;
+    this.xSpeed = scale;
+    this.ySpeed = 0;
+    this.scale = scale;
+    this.image = document.getElementById('snake') as CanvasImageSource;
   }
 
-  public draw(): void {
+  draw(): void {
     for (let i = 0; i < this.tail.length - 1; i++) {
-      this.tail[i] = this.tail[i + 1]
+      this.tail[i] = this.tail[i + 1];
     }
 
-    this.tail[this.total - 1] = { x: this.x, y: this.y }
+    this.tail[this.total - 1] = { x: this.x, y: this.y };
 
-    this.x += this.xSpeed
-    this.y += this.ySpeed
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
 
-    if (this.x >= this.dimensions.padRight) this.x = this.dimensions.padLeft
-    if (this.x < this.dimensions.padLeft) this.x = this.dimensions.padRight - this.scale
-    if (this.y >= this.dimensions.padBottom) this.y = this.dimensions.padTop
-    if (this.y < this.dimensions.padTop) this.y = this.dimensions.padBottom - this.scale
+    if (this.x >= this.dimensions.right) this.x = this.dimensions.left;
+    if (this.x < this.dimensions.left) this.x = this.dimensions.right - this.scale;
+    if (this.y >= this.dimensions.bottom) this.y = this.dimensions.top;
+    if (this.y < this.dimensions.top) this.y = this.dimensions.bottom - this.scale;
 
     for (let i = 0; i < this.tail.length; i++) {
-      this.ctx.drawImage(this.image, this.tail[i].x, this.tail[i].y, this.scale, this.scale)
+      this.ctx.drawImage(this.image, this.tail[i].x, this.tail[i].y, this.scale, this.scale);
     }
 
-    this.ctx.drawImage(this.image, this.x, this.y, this.scale, this.scale)
+    this.ctx.drawImage(this.image, this.x, this.y, this.scale, this.scale);
   }
 
-  public eat(food: any): boolean {
-    return this.x === food.x && this.y === food.y
+  die(): boolean {
+    for (let i = 0; i < this.tail.length - 1; i++) {
+      if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  public grow(): void {
-    this.total++
+  reset(): void {
+    this.total = 2;
+    this.tail = [];
   }
 
-  public changeDirection(direction: string): void {
+  eat(food: FoodConstructor): boolean {
+    return this.x === food.x && this.y === food.y;
+  }
+
+  grow(): void {
+    this.total++;
+  }
+
+  changeDirection(direction: string): void {
     switch (direction) {
       case 'UP':
-        this.xSpeed = 0
-        this.ySpeed = -this.scale
-        break
+        if (this.direction === 'DOWN') return;
+        this.xSpeed = 0;
+        this.ySpeed = -this.scale;
+        break;
       case 'DOWN':
-        this.xSpeed = 0
-        this.ySpeed = this.scale
-        break
+        if (this.direction === 'UP') return;
+        this.xSpeed = 0;
+        this.ySpeed = this.scale;
+        break;
       case 'LEFT':
-        this.xSpeed = -this.scale
-        this.ySpeed = 0
-        break
+        if (this.direction === 'RIGHT') return;
+        this.xSpeed = -this.scale;
+        this.ySpeed = 0;
+        break;
       case 'RIGHT':
-        this.xSpeed = this.scale
-        this.ySpeed = 0
-        break
+        if (this.direction === 'LEFT') return;
+        this.xSpeed = this.scale;
+        this.ySpeed = 0;
+        break;
+      default:
+        break;
     }
+
+    this.direction = direction;
   }
 }
-
-export default Snake

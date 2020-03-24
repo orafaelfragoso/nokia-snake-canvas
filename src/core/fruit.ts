@@ -1,32 +1,29 @@
-class Fruit {
-  public x: number
-  public y: number
-  public scale: number
-  public ctx: CanvasRenderingContext2D
-  public image: CanvasImageSource
-  private dimensions: any
+import { BoardDimension, FoodConstructor } from './types';
 
-  constructor(ctx: CanvasRenderingContext2D, dimensions: any, scale: number) {
-    this.ctx = ctx
-    this.dimensions = dimensions
-    this.scale = scale
-    this.image = <CanvasImageSource> document.getElementById('food')
+export default class Fruit implements FoodConstructor {
+  x: number;
+  y: number;
+  scale: number;
+  ctx: CanvasRenderingContext2D;
+  image: CanvasImageSource;
+  dimensions: BoardDimension;
+
+  constructor(ctx: CanvasRenderingContext2D, dimensions: BoardDimension, scale: number) {
+    this.ctx = ctx;
+    this.dimensions = dimensions;
+    this.scale = scale;
+    this.image = document.getElementById('food') as CanvasImageSource;
   }
 
-  public pickLocation(): void {
-    const rows = this.dimensions.width / this.scale
-    const cols = this.dimensions.height / this.scale
+  pickLocation(): void {
+    const rows = this.dimensions.width / this.scale;
+    const cols = this.dimensions.height / this.scale;
 
-    this.x = (Math.floor(Math.random() * rows - 1)) * this.scale + this.dimensions.padLeft + this.scale
-    this.y = (Math.floor(Math.random() * cols - 1)) * this.scale + this.dimensions.padTop + this.scale
-
-    console.log(this.dimensions)
-    console.log(this.x, this.y)
+    this.x = Math.floor(Math.random() * rows - 1) * this.scale + this.dimensions.left + this.scale;
+    this.y = Math.floor(Math.random() * cols - 1) * this.scale + this.dimensions.top + this.scale;
   }
 
-  public draw(): void {
-    this.ctx.drawImage(this.image, this.x, this.y, this.scale, this.scale)
+  draw(): void {
+    this.ctx.drawImage(this.image, this.x, this.y, this.scale, this.scale);
   }
 }
-
-export default Fruit

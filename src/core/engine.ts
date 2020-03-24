@@ -1,51 +1,53 @@
-import Board from './board'
-import Snake from './snake'
-import Fruit from './fruit'
+import { EngineConstructor, BoardConstructor, SnakeConstructor, FoodConstructor } from './types';
+import Board from './board';
+import Snake from './snake';
+import Fruit from './fruit';
 
-class Engine {
-  private board: Board
-  private snake: Snake
-  private fruit: Fruit
+export default class Engine implements EngineConstructor {
+  board: BoardConstructor;
+  snake: SnakeConstructor;
+  fruit: FoodConstructor;
 
   constructor() {
-    const canvas = <HTMLCanvasElement> document.getElementById('board')
-    const ctx = <CanvasRenderingContext2D> canvas.getContext('2d')
-    const scale: number = 20
-    const windowWidth: number = window.innerWidth
-    const windowHeight: number = window.innerHeight
+    const canvas = document.getElementById('board') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const scale = 20;
+    const windowWidth: number = window.innerWidth;
+    const windowHeight: number = window.innerHeight;
 
-    this.board = new Board(ctx, windowWidth, windowHeight, scale)
-    this.snake = new Snake(ctx, this.board.dimensions, scale)
-    this.fruit = new Fruit(ctx, this.board.dimensions, scale)
+    this.board = new Board(ctx, windowWidth, windowHeight, scale);
+    this.snake = new Snake(ctx, this.board.dimensions, scale);
+    this.fruit = new Fruit(ctx, this.board.dimensions, scale);
 
-    this.board.fitToScreen()
+    this.board.fitToScreen();
 
-    window.addEventListener('keydown', this.gamepad.bind(this))
+    window.addEventListener('keydown', this._gamepad.bind(this));
   }
 
-  private gamepad(event: KeyboardEvent): void {
-    const direction = event.key.replace('Arrow', '').toUpperCase()
-    this.snake.changeDirection(direction)
+  _gamepad(event: KeyboardEvent): void {
+    const direction = event.key.replace('Arrow', '').toUpperCase();
+    this.snake.changeDirection(direction);
   }
 
-  private update(): void {
+  update(): void {
     window.requestAnimationFrame(() => {
-      this.board.draw()
-      this.fruit.draw()
-      this.snake.draw()
+      this.board.draw();
+      this.fruit.draw();
+      this.snake.draw();
 
       if (this.snake.eat(this.fruit)) {
-        this.snake.grow()
-        this.fruit.pickLocation()
+        this.snake.grow();
+        this.fruit.pickLocation();
       }
-    })
+
+      if (this.snake.die()) {
+        this.snake.reset();
+      }
+    });
   }
 
-  public run(): void {
-    this.fruit.pickLocation()
-
-    setInterval(this.update.bind(this), 100)
+  run(): void {
+    this.fruit.pickLocation();
+    setInterval(this.update.bind(this), 100);
   }
 }
-
-export default Engine
