@@ -35,7 +35,7 @@ yarn dev
 
 - [x] Basic Game Features
 - [x] Full-screen support
-- [ ] Tail collision
+- [x] Tail collision
 - [x] Food
 - [ ] Poison
 - [ ] Bonus Food
