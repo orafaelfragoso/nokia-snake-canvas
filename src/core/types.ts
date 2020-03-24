@@ -1,10 +1,11 @@
 export interface Vector {
   x: number;
   y: number;
+  xSpeed: number;
+  ySpeed: number;
   scale: number;
-  ctx: CanvasRenderingContext2D;
-  dimensions: BoardDimension;
-  draw: () => void;
+  update: (dimensions?: BoardDimension) => void;
+  draw: (callback: DrawCallback) => void;
 }
 
 export interface BoardConstructor {
@@ -17,21 +18,21 @@ export interface BoardConstructor {
   clear: () => void;
 }
 
-export interface FoodConstructor extends Vector {
+export type DrawCallback = (image: CanvasImageSource, x: number, y: number, scale: number) => void;
+
+export interface FruitConstructor extends Vector {
   image: CanvasImageSource;
-  pickLocation: () => void;
+  pickLocation: (x: number, y: number) => void;
 }
 
 export interface SnakeConstructor extends Vector {
-  xSpeed: number;
-  ySpeed: number;
   total: number;
-  tail: Array<SnakeTail>;
+  tail: Array<Coordinate>;
   image: CanvasImageSource;
   direction: string;
   die: () => boolean;
   reset: () => void;
-  eat: (food: FoodConstructor) => boolean;
+  eat: (food: FruitConstructor) => boolean;
   grow: () => void;
   changeDirection: (direction: string) => void;
 }
@@ -39,10 +40,16 @@ export interface SnakeConstructor extends Vector {
 export interface EngineConstructor {
   snake: SnakeConstructor;
   board: BoardConstructor;
-  fruit: FoodConstructor;
+  fruit: FruitConstructor;
+  ctx: CanvasRenderingContext2D;
+  currentTime: number;
+  lastTime: number;
+  delta: number;
+  speed: number;
+  interval: number;
 }
 
-export interface SnakeTail {
+export interface Coordinate {
   x: number;
   y: number;
 }

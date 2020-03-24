@@ -50,7 +50,7 @@ yarn dev
 - [ ] Ranking (localStorage)
 - [ ] Main Menu
 - [ ] Canvas Graphics instead of JPEGs
-- [ ] Speed increase when eating
+- [x] Speed increase when eating
 - [ ] Animations
   - [ ] Snake Eating
   - [ ] Objects Appearing

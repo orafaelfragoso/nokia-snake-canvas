@@ -1,4 +1,4 @@
-import { BoardDimension, FoodConstructor, SnakeConstructor, SnakeTail } from './types';
+import { BoardDimension, FruitConstructor, SnakeConstructor, Coordinate, DrawCallback } from './types';
 
 export default class Snake implements SnakeConstructor {
   x: number;
@@ -6,25 +6,26 @@ export default class Snake implements SnakeConstructor {
   xSpeed: number;
   ySpeed: number;
   scale: number;
-  ctx: CanvasRenderingContext2D;
   image: CanvasImageSource;
-  dimensions: BoardDimension;
-  total = 2;
-  tail: Array<SnakeTail> = [];
+  total: number;
+  tail: Array<Coordinate>;
   direction = 'RIGHT';
 
-  constructor(ctx: CanvasRenderingContext2D, dimensions: BoardDimension, scale: number) {
-    this.ctx = ctx;
-    this.dimensions = dimensions;
-    this.x = dimensions.width / 2 + dimensions.left - scale / 2;
-    this.y = dimensions.height / 2 + dimensions.top - scale / 2;
+  constructor(initialPosition: Coordinate, scale: number, image: string) {
+    this.x = initialPosition.x;
+    this.y = initialPosition.y;
     this.xSpeed = scale;
     this.ySpeed = 0;
     this.scale = scale;
-    this.image = document.getElementById('snake') as CanvasImageSource;
+    this.image = document.getElementById(image) as CanvasImageSource;
+    this.total = 2;
+    this.tail = [
+      { x: this.x, y: this.y },
+      { x: this.x, y: this.y },
+    ];
   }
 
-  draw(): void {
+  update(dimensions: BoardDimension): void {
     for (let i = 0; i < this.tail.length - 1; i++) {
       this.tail[i] = this.tail[i + 1];
     }
@@ -34,16 +35,18 @@ export default class Snake implements SnakeConstructor {
     this.x += this.xSpeed;
     this.y += this.ySpeed;
 
-    if (this.x >= this.dimensions.right) this.x = this.dimensions.left;
-    if (this.x < this.dimensions.left) this.x = this.dimensions.right - this.scale;
-    if (this.y >= this.dimensions.bottom) this.y = this.dimensions.top;
-    if (this.y < this.dimensions.top) this.y = this.dimensions.bottom - this.scale;
+    if (this.x >= dimensions.right) this.x = dimensions.left;
+    if (this.x < dimensions.left) this.x = dimensions.right - this.scale;
+    if (this.y >= dimensions.bottom) this.y = dimensions.top;
+    if (this.y < dimensions.top) this.y = dimensions.bottom - this.scale;
+  }
 
+  draw(callback: DrawCallback): void {
     for (let i = 0; i < this.tail.length; i++) {
-      this.ctx.drawImage(this.image, this.tail[i].x, this.tail[i].y, this.scale, this.scale);
+      callback(this.image, this.tail[i].x, this.tail[i].y, this.scale);
     }
 
-    this.ctx.drawImage(this.image, this.x, this.y, this.scale, this.scale);
+    callback(this.image, this.x, this.y, this.scale);
   }
 
   die(): boolean {
@@ -58,10 +61,13 @@ export default class Snake implements SnakeConstructor {
 
   reset(): void {
     this.total = 2;
-    this.tail = [];
+    this.tail = [
+      { x: this.x, y: this.y },
+      { x: this.x, y: this.y },
+    ];
   }
 
-  eat(food: FoodConstructor): boolean {
+  eat(food: FruitConstructor): boolean {
     return this.x === food.x && this.y === food.y;
   }
 
